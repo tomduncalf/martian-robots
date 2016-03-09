@@ -39,7 +39,7 @@ function processInput(input) {
   return finalState.output.join('\n')
 }
 
-// createWorld :: Number -> Number -> [Boolean]
+// createWorld :: Number -> Number -> [[Boolean]]
 // Create a 2-dimensional array of booleans representing the world, with the boolean used to
 // represent if a robot has been lost at a given position
 function createWorld(width, height) {
