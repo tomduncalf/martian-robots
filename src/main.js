@@ -15,7 +15,7 @@ function processInput(input) {
   const robotInstructions = _.chunk(2, lines.slice(1))
 
   const initialState = {
-    world: createWorld(parseInt(worldW, 10), parseInt(worldH, 10)),
+    world: createWorld(parseInt(worldW, 10) + 1, parseInt(worldH, 10) + 1),
     output: []
   }
 
@@ -90,7 +90,7 @@ function processRobotSequence(world, startPos, sequence) {
 // outsideBounds :: Position -> World -> Boolean
 // Check if a position is outside the bounds of a rectangular world
 function outsideBounds(position, world) {
-  return position.x > world.length - 1 || position.x < 0 || position.y > world[0].length - 1 || position.y < 0
+  return position.x > world.length - 1 || position.x < 0 || position.y > world[0].length - 1|| position.y < 0
 }
 
 // processStep :: State -> String -> State
@@ -102,11 +102,12 @@ function processStep(state, step) {
     case 'F':
       const newPosition = getRelativePosition(state.position, state.direction, 1)
       const robotLostHere = state.world[state.position.x][state.position.y] === true
+      const isOutsideBounds = outsideBounds(newPosition, state.world)
 
-      if (outsideBounds(newPosition, state.world) && !robotLostHere) {
+      if (isOutsideBounds && !robotLostHere) {
         newState.world[state.position.x][state.position.y] = true
         newState.lost = true
-      } else if (!robotLostHere) {
+      } else if (!isOutsideBounds) {
         newState.position = newPosition
       }
 

@@ -124,21 +124,31 @@ describe('martian robots', () => {
     })
 
     describe('mixed sequences', () => {
-      it('"FFRFFLFF" should move a robot from 0,0N to 2,4N', () => {
+      it('"FFRFFLFF" should move a robot from 0,0 N to 2,4 N', () => {
         const input = generateSequence(10, 10, [['0 0 N', 'FFRFFLFF']])
         expect(processInput(input)).to.equal('2 4 N')
+      })
+
+      it('"RFRFRFRF" should move a robot from 1,1 E TO 1,1 E', () => {
+        const input = generateSequence(5, 3, [['1 1 E', 'RFRFRFRF']])
+        expect(processInput(input)).to.equal('1 1 E')
+      })
+
+      it('"FRRFLLF" should move a robot from 3,2 N to 3,3 N', () => {
+        const input = generateSequence(5, 3, [['3 2 N', 'FRRFLLF']])
+        expect(processInput(input)).to.equal('3 3 N')
       })
     })
 
     describe('robot is lost when moving off the grid', () => {
       it('is lost when moving off the north of the grid', () => {
-        const input = generateSequence(10, 10, [['0 9 N', 'F']])
-        expect(processInput(input)).to.equal('0 9 N LOST')
+        const input = generateSequence(10, 10, [['0 10 N', 'F']])
+        expect(processInput(input)).to.equal('0 10 N LOST')
       })
 
       it('is lost when moving off the east of the grid', () => {
-        const input = generateSequence(10, 10, [['9 0 E', 'F']])
-        expect(processInput(input)).to.equal('9 0 E LOST')
+        const input = generateSequence(10, 10, [['10 0 E', 'F']])
+        expect(processInput(input)).to.equal('10 0 E LOST')
       })
 
       it('is lost when moving off the south of the grid', () => {
@@ -155,6 +165,16 @@ describe('martian robots', () => {
         const input = generateSequence(10, 10, [['0 0 W', 'FRR']])
         expect(processInput(input)).to.equal('0 0 W LOST')
       })
+
+      it('should get lost at the correct location for a sample position', () => {
+        const input = generateSequence(5, 3, [['3 3 N', 'F']])
+        expect(processInput(input)).to.equal('3 3 N LOST')
+      })
+
+      it('should get lost at the correct location for a sample sequence', () => {
+        const input = generateSequence(5, 3, [['3 2 N', 'FRRFLLFFRRFLL']])
+        expect(processInput(input)).to.equal('3 3 N LOST')
+      })
     })
   })
 
@@ -165,8 +185,8 @@ describe('martian robots', () => {
     })
 
     it('should not allow a second robot to get lost where the first did', () => {
-      const input = generateSequence(10, 10, [['0 9 N', 'F'], ['0 8 N', 'FF']])
-      expect(processInput(input)).to.equal(['0 9 N LOST', '0 9 N'].join('\n'))
+      const input = generateSequence(10, 10, [['0 10 N', 'F'], ['0 9 N', 'FF']])
+      expect(processInput(input)).to.equal(['0 10 N LOST', '0 10 N'].join('\n'))
     })
   })
 
