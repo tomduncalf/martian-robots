@@ -3,6 +3,7 @@
 const _ = require('lodash/fp')
 
 // processInput :: String -> String
+// Process an input string representing information about the world and a number of robot instruction sequences
 function processInput(input) {
   const lines = input.split('\n').filter(_.size)
 
@@ -19,15 +20,14 @@ function processInput(input) {
   }
 
   const finalState = robotInstructions.reduce(
-    (accState, instruction) => {
+    (currentState, instruction) => {
       const [ startPos, sequence ] = instruction
-      console.log(`startPos ${startPos}, sequence ${sequence}`)
 
-      const result = processRobotSequence(accState.world, startPos, sequence)
+      const result = processRobotSequence(currentState.world, startPos, sequence)
 
       return {
         world: result['world'],
-        output: accState.output.concat(result['output'])
+        output: currentState.output.concat(result['output'])
       }
     },
     initialState
@@ -71,33 +71,42 @@ function processRobotSequence(world, startPos, sequence) {
   }
 
   const finalState = splitSequence.reduce(
-    (accState, step) => {
-      return processStep(accState, step)
+    (currentState, step) => {
+      if (!currentState.lost) {
+        return processStep(currentState, step)
+      } else {
+        return currentState
+      }
     },
     initialState
   )
 
   return {
     world: finalState.world,
-    output: `${finalState.position.x} ${finalState.position.y} ${finalState.lost ? 'LOST' : finalState.direction}`
+    output: `${finalState.position.x} ${finalState.position.y} ${finalState.direction}${finalState.lost ? ' LOST' : ''}`
   }
 }
 
+// outsideBounds :: Position -> World -> Boolean
+// Check if a position is outside the bounds of a rectangular world
 function outsideBounds(position, world) {
   return position.x > world.length - 1 || position.x < 0 || position.y > world[0].length - 1 || position.y < 0
 }
 
+// processStep :: State -> String -> State
+// Process a single step of a sequence and return the new state as a result of it
 function processStep(state, step) {
   const newState = Object.assign({}, state)
 
   switch (step) {
     case 'F':
       const newPosition = getRelativePosition(state.position, state.direction, 1)
+      const robotLostHere = state.world[state.position.x][state.position.y] === true
 
-      if (outsideBounds(newPosition, state.world)) {
+      if (outsideBounds(newPosition, state.world) && !robotLostHere) {
         newState.world[state.position.x][state.position.y] = true
         newState.lost = true
-      } else {
+      } else if (!robotLostHere) {
         newState.position = newPosition
       }
 
@@ -113,6 +122,7 @@ function processStep(state, step) {
   return newState
 }
 
+// getRelativePosition :: Position -> String -> Number -> Position
 function getRelativePosition(position, direction, delta) {
   switch (direction) {
     case 'N':
@@ -126,6 +136,7 @@ function getRelativePosition(position, direction, delta) {
   }
 }
 
+// getRelativeDirection :: String -> Number -> String
 function getRelativeDirection(direction, delta) {
   const directions = ['N', 'E', 'S', 'W']
   return directions[mod((directions.indexOf(direction) + delta), directions.length)];
@@ -133,7 +144,7 @@ function getRelativeDirection(direction, delta) {
 
 // JS modulo doesn't behave for negatives: http://stackoverflow.com/questions/4467539/javascript-modulo-not-behaving
 function mod(n, m) {
-    return ((n % m) + m) % m;
+  return ((n % m) + m) % m;
 }
 
 module.exports = processInput

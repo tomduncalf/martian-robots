@@ -1,7 +1,7 @@
 "use strict"
 
 const expect = require('chai').expect
-const processInputSequence = require('./main')
+const processInput = require('./main')
 
 function generateSequence(worldW, worldH, robots) {
   const seq = `${worldW} ${worldH}
@@ -19,17 +19,17 @@ describe('martian robots', () => {
   describe('zero length sequence', () => {
     it('should not move a robot from 0,0 N', () => {
       const input = generateSequence(10, 10, [['0 0 N']])
-      expect(processInputSequence(input)).to.equal('0 0 N')
+      expect(processInput(input)).to.equal('0 0 N')
     })
 
     it('should not move a robot from 1,1 N', () => {
       const input = generateSequence(10, 10, [['1 1 N']])
-      expect(processInputSequence(input)).to.equal('1 1 N')
+      expect(processInput(input)).to.equal('1 1 N')
     })
 
     it('should not move a robot from 1,1 E', () => {
       const input = generateSequence(10, 10, [['1 1 E']])
-      expect(processInputSequence(input)).to.equal('1 1 E')
+      expect(processInput(input)).to.equal('1 1 E')
     })
   })
 
@@ -38,87 +38,87 @@ describe('martian robots', () => {
       describe('"F" sequence', () => {
         it('should move a robot from 0,0 N to 0,1 N', () => {
           const input = generateSequence(10, 10, [['0 0 N', 'F']])
-          expect(processInputSequence(input)).to.equal('0 1 N')
+          expect(processInput(input)).to.equal('0 1 N')
         })
 
         it('should move a robot from 0,0 E to 1,0 E', () => {
           const input = generateSequence(10, 10, [['0 0 E', 'F']])
-          expect(processInputSequence(input)).to.equal('1 0 E')
+          expect(processInput(input)).to.equal('1 0 E')
         })
 
         it('should move a robot from 1,1 S to 1,0 S', () => {
           const input = generateSequence(10, 10, [['1 1 S', 'F']])
-          expect(processInputSequence(input)).to.equal('1 0 S')
+          expect(processInput(input)).to.equal('1 0 S')
         })
 
         it('should move a robot from 1,1 W to 0,1 W', () => {
           const input = generateSequence(10, 10, [['1 1 W', 'F']])
-          expect(processInputSequence(input)).to.equal('0 1 W')
+          expect(processInput(input)).to.equal('0 1 W')
         })
       })
 
       describe('"FFFFF" sequence', () => {
         it('should move a robot from 0,0 N to 0,5 N', () => {
           const input = generateSequence(10, 10, [['0 0 N', 'FFFFF']])
-          expect(processInputSequence(input)).to.equal('0 5 N')
+          expect(processInput(input)).to.equal('0 5 N')
         })
       })
 
       describe('"R" sequence', () => {
         it('should move a robot from 0,0 N to 0,0 E', () => {
           const input = generateSequence(10, 10, [['0 0 N', 'R']])
-          expect(processInputSequence(input)).to.equal('0 0 E')
+          expect(processInput(input)).to.equal('0 0 E')
         })
 
         it('should move a robot from 0,0 E to 0,0 S', () => {
           const input = generateSequence(10, 10, [['0 0 E', 'R']])
-          expect(processInputSequence(input)).to.equal('0 0 S')
+          expect(processInput(input)).to.equal('0 0 S')
         })
 
         it('should move a robot from 0,0 S to 0,0 W', () => {
           const input = generateSequence(10, 10, [['0 0 S', 'R']])
-          expect(processInputSequence(input)).to.equal('0 0 W')
+          expect(processInput(input)).to.equal('0 0 W')
         })
 
         it('should move a robot from 0,0 W to 0,0 N', () => {
           const input = generateSequence(10, 10, [['0 0 W', 'R']])
-          expect(processInputSequence(input)).to.equal('0 0 N')
+          expect(processInput(input)).to.equal('0 0 N')
         })
       })
 
       describe('"L" sequence', () => {
         it('should move a robot from 0,0 N to 0,0 W', () => {
           const input = generateSequence(10, 10, [['0 0 N', 'L']])
-          expect(processInputSequence(input)).to.equal('0 0 W')
+          expect(processInput(input)).to.equal('0 0 W')
         })
 
         it('should move a robot from 0,0 E to 0,0 N', () => {
           const input = generateSequence(10, 10, [['0 0 E', 'L']])
-          expect(processInputSequence(input)).to.equal('0 0 N')
+          expect(processInput(input)).to.equal('0 0 N')
         })
 
         it('should move a robot from 0,0 S to 0,0 E', () => {
           const input = generateSequence(10, 10, [['0 0 S', 'L']])
-          expect(processInputSequence(input)).to.equal('0 0 E')
+          expect(processInput(input)).to.equal('0 0 E')
         })
 
         it('should move a robot from 0,0 W to 0,0 S', () => {
           const input = generateSequence(10, 10, [['0 0 W', 'L']])
-          expect(processInputSequence(input)).to.equal('0 0 S')
+          expect(processInput(input)).to.equal('0 0 S')
         })
       })
 
       describe('"RR" sequence', () => {
         it('should move a robot from 0,0 N to 0,0 S', () => {
           const input = generateSequence(10, 10, [['0 0 N', 'RR']])
-          expect(processInputSequence(input)).to.equal('0 0 S')
+          expect(processInput(input)).to.equal('0 0 S')
         })
       })
 
       describe('"LL" sequence', () => {
         it('should move a robot from 0,0 N to 0,0 S', () => {
           const input = generateSequence(10, 10, [['0 0 N', 'LL']])
-          expect(processInputSequence(input)).to.equal('0 0 S')
+          expect(processInput(input)).to.equal('0 0 S')
         })
       })
     })
@@ -126,36 +126,67 @@ describe('martian robots', () => {
     describe('mixed sequences', () => {
       it('"FFRFFLFF" should move a robot from 0,0N to 2,4N', () => {
         const input = generateSequence(10, 10, [['0 0 N', 'FFRFFLFF']])
-        expect(processInputSequence(input)).to.equal('2 4 N')
+        expect(processInput(input)).to.equal('2 4 N')
       })
     })
 
     describe('robot is lost when moving off the grid', () => {
       it('is lost when moving off the north of the grid', () => {
         const input = generateSequence(10, 10, [['0 9 N', 'F']])
-        expect(processInputSequence(input)).to.equal('0 9 LOST')
+        expect(processInput(input)).to.equal('0 9 N LOST')
       })
 
       it('is lost when moving off the east of the grid', () => {
         const input = generateSequence(10, 10, [['9 0 E', 'F']])
-        expect(processInputSequence(input)).to.equal('9 0 LOST')
+        expect(processInput(input)).to.equal('9 0 E LOST')
       })
 
       it('is lost when moving off the south of the grid', () => {
         const input = generateSequence(10, 10, [['0 0 S', 'F']])
-        expect(processInputSequence(input)).to.equal('0 0 LOST')
+        expect(processInput(input)).to.equal('0 0 S LOST')
       })
 
       it('is lost when moving off the west of the grid', () => {
         const input = generateSequence(10, 10, [['0 0 W', 'F']])
-        expect(processInputSequence(input)).to.equal('0 0 LOST')
+        expect(processInput(input)).to.equal('0 0 W LOST')
+      })
+
+      it('does not process further instructions after a robot is lost', () => {
+        const input = generateSequence(10, 10, [['0 0 W', 'FRR']])
+        expect(processInput(input)).to.equal('0 0 W LOST')
       })
     })
-
-
   })
 
-  describe('limits', () => {
+  describe('multiple robots', () => {
+    it('should process sequences for multiple robots', () => {
+      const input = generateSequence(10, 10, [['0 0 N', 'F'], ['5 0 E', 'F'], ['10 0 S', 'R']])
+      expect(processInput(input)).to.equal(['0 1 N', '6 0 E', '10 0 W'].join('\n'))
+    })
 
+    it('should not allow a second robot to get lost where the first did', () => {
+      const input = generateSequence(10, 10, [['0 9 N', 'F'], ['0 8 N', 'FF']])
+      expect(processInput(input)).to.equal(['0 9 N LOST', '0 9 N'].join('\n'))
+    })
   })
+
+  it('should process the sample input correctly', () => {
+    const input = `5 3
+1 1 E
+RFRFRFRF
+
+3 2 N
+FRRFLLFFRRFLL
+
+0 3 W
+LLFFFLFLFL`
+
+    const expected = `1 1 E
+3 3 N LOST
+2 3 S`
+
+    expect(processInput(input)).to.equal(expected)
+  })
+
+
 })
