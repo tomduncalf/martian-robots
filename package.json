@@ -4,7 +4,7 @@
   "description": "Martian Robots Coding Challenge",
   "main": "index.js",
   "scripts": {
-    "run": "node --harmony_destructuring src/main.js",
+    "processFile": "node --harmony_destructuring src/processFile.js",
     "test": "mocha --harmony_destructuring src/**/*.spec.js"
   },
   "author": "Tom Duncalf (tom@tomduncalf.com)",

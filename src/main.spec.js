@@ -4,18 +4,11 @@ const expect = require('chai').expect
 const processInput = require('./main')
 
 function generateSequence(worldW, worldH, robots) {
-  const seq = `${worldW} ${worldH}
+  return `${worldW} ${worldH}
 ${robots.map(instructions => instructions.join('\n')).join('\n')}`
-  return seq
 }
 
 describe('martian robots', () => {
-  describe('world size', () => {
-    /*it('should initialize the world to the correct size', () => {
-      expect()
-    })*/
-  })
-
   describe('zero length sequence', () => {
     it('should not move a robot from 0,0 N', () => {
       const input = generateSequence(10, 10, [['0 0 N']])
@@ -207,6 +200,4 @@ LLFFFLFLFL`
 
     expect(processInput(input)).to.equal(expected)
   })
-
-
 })
