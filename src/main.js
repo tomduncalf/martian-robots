@@ -64,6 +64,7 @@ function processRobotSequence(world, startPos, sequence) {
   }
 
   const initialState = {
+    world: world,
     position: { x: parseInt(splitStartPos[0], 10), y: parseInt(splitStartPos[1], 10) },
     direction: splitStartPos[2],
     lost: false
@@ -77,9 +78,13 @@ function processRobotSequence(world, startPos, sequence) {
   )
 
   return {
-    world: world,
-    output: `${finalState.position.x} ${finalState.position.y} ${finalState.direction}`
+    world: finalState.world,
+    output: `${finalState.position.x} ${finalState.position.y} ${finalState.lost ? 'LOST' : finalState.direction}`
   }
+}
+
+function outsideBounds(position, world) {
+  return position.x > world.length - 1 || position.x < 0 || position.y > world[0].length - 1 || position.y < 0
 }
 
 function processStep(state, step) {
@@ -87,14 +92,22 @@ function processStep(state, step) {
 
   switch (step) {
     case 'F':
-      newState.position = getRelativePosition(state.position, state.direction, 1)
+      const newPosition = getRelativePosition(state.position, state.direction, 1)
+
+      if (outsideBounds(newPosition, state.world)) {
+        newState.world[state.position.x][state.position.y] = true
+        newState.lost = true
+      } else {
+        newState.position = newPosition
+      }
+
       break
     case 'R':
       newState.direction = getRelativeDirection(state.direction, 1)
-      break;
+      break
     case 'L':
       newState.direction = getRelativeDirection(state.direction, -1)
-      break;
+      break
   }
 
   return newState

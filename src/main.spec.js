@@ -132,8 +132,23 @@ describe('martian robots', () => {
 
     describe('robot is lost when moving off the grid', () => {
       it('is lost when moving off the north of the grid', () => {
-        const input = generateSequence(10, 10, [['0 10 N', 'F']])
-        expect(processInputSequence(input)).to.equal('0 10 LOST')
+        const input = generateSequence(10, 10, [['0 9 N', 'F']])
+        expect(processInputSequence(input)).to.equal('0 9 LOST')
+      })
+
+      it('is lost when moving off the east of the grid', () => {
+        const input = generateSequence(10, 10, [['9 0 E', 'F']])
+        expect(processInputSequence(input)).to.equal('9 0 LOST')
+      })
+
+      it('is lost when moving off the south of the grid', () => {
+        const input = generateSequence(10, 10, [['0 0 S', 'F']])
+        expect(processInputSequence(input)).to.equal('0 0 LOST')
+      })
+
+      it('is lost when moving off the west of the grid', () => {
+        const input = generateSequence(10, 10, [['0 0 W', 'F']])
+        expect(processInputSequence(input)).to.equal('0 0 LOST')
       })
     })
 
