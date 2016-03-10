@@ -4,7 +4,7 @@ Solution to Martian Robots challenge
 
 ## Requirements
 
-* `node` 5.0 (requires ES6 destructuring support)
+* `node` >= 5.0 (requires ES6 destructuring support)
 
 ## Pre-requisites
 

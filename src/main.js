@@ -29,8 +29,8 @@ function processInput(input) {
       const result = processRobotSequence(currentState.world, startPos, sequence)
 
       return {
-        world: result['world'],
-        output: currentState.output.concat(result['output'])
+        world: result.world,
+        output: currentState.output.concat(result.output)
       }
     },
     initialState
@@ -39,7 +39,9 @@ function processInput(input) {
   return finalState.output.join('\n')
 }
 
-// createWorld :: Number -> Number -> [[Boolean]]
+// createWorld :: Number -> Number -> World
+// World is: [[Boolean]]
+//
 // Create a 2-dimensional array of booleans representing the world, with the boolean used to
 // represent if a robot has been lost at a given position
 function createWorld(width, height) {
@@ -55,7 +57,9 @@ function createWorld(width, height) {
   return world
 }
 
-// processRobotSequence :: World -> String -> String -> [World, String]
+// processRobotSequence :: World -> String -> String -> ProcessedState
+// ProcessedState is: { world: World, output: String }
+//
 // Take a start position, world and sequence of instructions for a robot and return the state of the world
 // after the robots has navigated it, and the final position of the robot
 function processRobotSequence(world, startPos, sequence) {
@@ -91,6 +95,9 @@ function processRobotSequence(world, startPos, sequence) {
 }
 
 // processStep :: State -> String -> State
+// State is: { world: World, position: Position, direction: String, lost: Boolean }
+// Position is: { x: Number, y: Number }
+//
 // Process a single step of a sequence and return the new state as a result of it
 function processStep(state, step) {
   const newState = Object.assign({}, state)
